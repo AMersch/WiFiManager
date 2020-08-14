@@ -282,10 +282,15 @@ def start(port=80):
         try:
             client.settimeout(5.0)
 
+            data = ''
             request = b""
             try:
-                while "\r\n\r\n" not in request:
-                    request += client.recv(512)
+                while True:
+                    data = client.recv(4096)
+                    if not data:
+                        break
+                    
+                    request += data                    
             except OSError:
                 pass
 
